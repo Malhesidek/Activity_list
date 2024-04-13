@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memory_hive/constants.dart';
 
 void main() {
   runApp(const ActivityApp());
@@ -15,7 +16,8 @@ class _ActivityAppState extends State<ActivityApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light().copyWith(textTheme: TextTheme(bodyMedium: TextStyle(fontFamily: "Nunito Sans", fontSize: 14))),
+      theme: ThemeData.light()
+          .copyWith(textTheme: TextTheme(bodyMedium: kTextDefault)),
       home: ActivityListPage(),
     );
   }
@@ -31,6 +33,20 @@ class ActivityListPage extends StatefulWidget {
 class _ActivityListPageState extends State<ActivityListPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(appBar: AppBar(title: Text("Activity"),),));
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: kColorPurple,
+        title: Text(
+          "Activity",
+          style: kTextAppTitle,
+        ),
+      ),
+      body: Center(
+        child: Text(
+          "This is the text",
+        ),
+      ),
+    ));
   }
 }
