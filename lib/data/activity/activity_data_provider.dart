@@ -7,40 +7,50 @@ import 'package:memory_hive/data/database_provider.dart';
 class ActivityDataProvider {
   final DatabaseProvider databaseProvider;
 
-  ActivityDataProvider({
-    required this.databaseProvider,
-  });
+  ActivityDataProvider({DatabaseProvider? databaseProvider})
+      : this.databaseProvider = databaseProvider ?? DatabaseProvider();
 
-  Future<List<ActivityModel>> fetchAllActivities() async {
+  Future<List<Map<String, Object?>>> fetchAllActivities() async {
     final db = await databaseProvider.database;
     var data = await db.rawQuery('SELECT * FROM Activities');
-    List<ActivityModel> activities = List.generate(
-        data.length, (index) => ActivityModel.fromJson(data[index]));
-    log("${activities.length}");
-    return activities;
+    log("${data}");
+    return data;
   }
 
-  Future<ActivityModel> fetchActivityById(int id) async {
+  Future<List<Map<String, Object?>>> fetchActivityById(int id) async {
     final db = await databaseProvider.database;
     var data = await db.rawQuery('SELECT * FROM Activities WHERE id=$id');
-    ActivityModel activity = ActivityModel.fromJson(data[0]);
-    log("${activity}");
-    return activity;
+    log("$data");
+    return data;
   }
 
-  Future<void> insertActivity(ActivityModel activity) async {
+  //
+
+  Future<void> insertActivity(Map<String, dynamic> activityJSON) async {
     final db = await databaseProvider.database;
     var data = await db.rawInsert(
         'INSERT INTO Activities(date, image, title, description, time) VALUES(?,?,?,?,?)',
-        [activity.date, activity.image, activity.title, activity.description, activity.time]);
+        [
+          activityJSON["date"],
+          activityJSON["image"],
+          activityJSON["title"],
+          activityJSON["description"],
+          activityJSON["time"],
+        ]);
     log('INSERTED $data');
   }
 
-  Future<void> editActivity(ActivityModel activity) async {
+  Future<void> editActivity(Map<String, dynamic> activityJSON) async {
     final db = await databaseProvider.database;
     var data = await db.rawUpdate(
         'UPDATE Activities SET image=?, title=?, description=?, time=? WHERE ID=?',
-        [activity.image, activity.title, activity.description, activity.time, activity.id]);
+        [
+          activityJSON["image"],
+          activityJSON["title"],
+          activityJSON["description"],
+          activityJSON["time"],
+          activityJSON["id"],
+        ]);
     log('UPDATED $data');
   }
 
