@@ -58,4 +58,16 @@ class ActivityDataProvider {
     var data = await db.rawDelete('DELETE from Activities WHERE id=?', [id]);
     log('DELETED $data');
   }
+
+  Future<List<Map<String, Object?>>> fetchActivitiesByDay(DateTime selectedDay) async {
+    int year = selectedDay.year;
+    int month = selectedDay.month;
+    int day = selectedDay.day;
+
+    final db = await databaseProvider.database;
+    var data = await db.rawQuery('''SELECT * FROM Activities
+    WHERE strftime('%Y', date) = ? AND strftime('%m', date) = ? AND strftime('%d', date) = ?''', ['$year', '$month', '$day']);
+    log("${data}");
+    return data;
+  }
 }

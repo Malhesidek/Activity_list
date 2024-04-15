@@ -38,4 +38,12 @@ class ActivityRepo {
   Future<void> deleteActivity(int id) async {
     activityDataProvider.deleteActivity(id);
   }
+
+  Future<List<ActivityModel>> fetchActivitiesByDay(DateTime chosenDay) async {
+    final data = await activityDataProvider.fetchActivitiesByDay(chosenDay);
+    List<ActivityModel> activities = List.generate(
+        data.length, (index) => ActivityModel.fromJson(data[index]));
+    log("$activities");
+    return activities;
+  }
 }
