@@ -2,8 +2,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-
 class ActivityModel {
   final int? id;
   final DateTime date;

@@ -40,7 +40,7 @@ class DatabaseProvider {
       image BLOB,
       title VARCHAR(255) NOT NULL, 
       description TEXT,
-      time TIME
+      time TIME)
       ''');
     } catch (e) {
       log("ACTIVITIES TABLE IS NOT CREATED");

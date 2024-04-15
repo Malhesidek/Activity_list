@@ -14,7 +14,7 @@ class ActivityRepo {
     final data = await activityDataProvider.fetchAllActivities();
     List<ActivityModel> activities = List.generate(
         data.length, (index) => ActivityModel.fromJson(data[index]));
-    log("${activities}");
+    log("$activities");
     return activities;
   }
 
@@ -36,6 +36,6 @@ class ActivityRepo {
   }
 
   Future<void> deleteActivity(int id) async {
-    final data = activityDataProvider.deleteActivity(id);
+    activityDataProvider.deleteActivity(id);
   }
 }
