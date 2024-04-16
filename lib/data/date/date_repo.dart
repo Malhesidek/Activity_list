@@ -8,11 +8,21 @@ class DateRepo {
     required this.dateDataProvider,
   });
 
-  // TODO check return value
-  Future<void> fetchActivitiesByMonth(
+  Future<Map<DateTime, int>> fetchActivitiesByMonth(
       DateTime selectedMonth) async {
-    var data = dateDataProvider.fetchActivitiesByMonth(selectedMonth);
-    
-    log("${data}");
+    var data = await dateDataProvider.fetchActivitiesByMonth(selectedMonth);
+    var activitiesNumber = activitiesCountByDay(data);
+    log("${activitiesNumber}");
+    return activitiesNumber;
+  }
+
+  Map<DateTime, int> activitiesCountByDay(
+      List<Map<String, Object?>> activitiesList) {
+    Map<DateTime, int> activitiesCountByDate = {};
+    for (var activity in activitiesList) {
+      DateTime date = activity['date'] as DateTime;
+      activitiesCountByDate[date] = (activitiesCountByDate[date] ?? 0) + 1;
+    }
+    return activitiesCountByDate;
   }
 }
