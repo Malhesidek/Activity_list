@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_hive/constants.dart';
+import 'package:memory_hive/ui/screens/activitites_page.dart';
 
 void main() {
   runApp(const ActivityApp());
@@ -18,7 +19,7 @@ class _ActivityAppState extends State<ActivityApp> {
     return MaterialApp(
       theme: ThemeData.light()
           .copyWith(textTheme: TextTheme(bodyMedium: kTextDefault)),
-      home: ActivityListPage(),
+      home: ActivitiesPage(),
     );
   }
 }
