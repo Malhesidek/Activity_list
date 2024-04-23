@@ -35,18 +35,19 @@ class DatabaseProvider {
   void _onCreate(Database db, int version) async {
     try {
       await db.execute('''CREATE TABLE Activities(
-      id INT AUTO_INCREMENT PRIMARY KEY, 
+      id INTEGER PRIMARY KEY, 
       date DATE NOT NULL,
       image BLOB,
       title VARCHAR(255) NOT NULL, 
       description TEXT,
       time TIME)
       ''');
+      log('ACTIVITIES TABLE CREATED');
     } catch (e) {
       log("ACTIVITIES TABLE IS NOT CREATED");
       log("$e");
     }
 
-    log('ACTIVITIES TABLE CREATED');
+
   }
 }
