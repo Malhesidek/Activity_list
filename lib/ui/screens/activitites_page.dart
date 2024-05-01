@@ -12,8 +12,16 @@ class ActivitiesPage extends StatefulWidget {
 }
 
 class _ActivitiesPageState extends State<ActivitiesPage> {
-  DateBloc dateBloc = DateBloc();
-  ActivitiesBloc activitiesBloc = ActivitiesBloc();
+  late DateBloc dateBloc;
+  late ActivitiesBloc activitiesBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    dateBloc = DateBloc();
+    activitiesBloc = ActivitiesBloc(dateBloc);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

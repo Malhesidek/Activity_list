@@ -1,6 +1,19 @@
 part of 'activities_bloc.dart';
 
-@immutable
-sealed class ActivitiesState {}
+abstract class ActivitiesState {}
 
-final class ActivitiesInitial extends ActivitiesState {}
+class ActivitiesInitial extends ActivitiesState {
+  final List<ActivityModel> activities;
+  ActivitiesInitial({
+    required this.activities,
+  });
+}
+
+class ActivitiesChangedState extends ActivitiesState {
+  final List<ActivityModel> activities;
+  ActivitiesChangedState({
+    required this.activities,
+  });
+}
+
+class ActivitiesLoadingState extends ActivitiesState {}
