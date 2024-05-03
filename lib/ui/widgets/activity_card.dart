@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:memory_hive/constants.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
 
@@ -10,21 +11,58 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double sizedBoxHeight = 14;
     return Container(
-      color: kColorWhite,
+      decoration: BoxDecoration(
+        color: kColorWhite,
+        borderRadius: BorderRadius.circular(8)
+      ),
+      width: MediaQuery.of(context).size.width,
+      
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Column(children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // if (activity.image != null)
-          // read about rect in image
-          Image.asset("assets/images/Photo JPEG.jpg", fit: BoxFit.fill, height: 250,),
-          // Image.memory(activity.image!,fit: BoxFit.fill, height: 250,)
-        SizedBox(height: 10),
-        Text(activity.title, style: kTextDefaultBold),
-        if (activity.description != null)
-          Text(activity.description!, style: kTextDefault),
-        SizedBox(height: 10),
-        if (activity.time != null)
-          Text(activity.time.toString(), style: kTextDefault),
+        ClipRRect(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+          child: Image.asset(
+            "assets/images/Photo JPEG.jpg",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width - 20,
+            height: 50,
+          ),
+        ),
+        // Image.memory(activity.image!,fit: BoxFit.fill, height: 250,)
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: sizedBoxHeight),
+              Text(activity.title, style: kTextDefaultBold),
+              if (activity.description != null)
+                Column(
+                  children: [
+                    SizedBox(height: sizedBoxHeight),
+                    Text(
+                      activity.description!,
+                      style: kTextDefault,
+                    ),
+                  ],
+                ),
+              if (activity.time != null)
+                Column(
+                  children: [
+                    SizedBox(height: sizedBoxHeight),
+                    Text(
+                      activity.time.toString(),
+                      style: kTextDefault,
+                    ),
+                  ],
+                ),
+              SizedBox(height: sizedBoxHeight),
+            ],
+          ),
+        )
       ]),
     );
   }
