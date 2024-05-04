@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memory_hive/constants.dart';
@@ -85,7 +87,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           if (state is ActivitiesChangedState) {
                             return Column(
                               children: state.activities.map((activity) {
-                                return ActivityCard(activity: activity);
+                                return GestureDetector(
+                                    onTap: () {
+                                      log(activity.id.toString());
+                                    },
+                                    child: ActivityCard(activity: activity));
                               }).toList(),
                             );
                           } else {
