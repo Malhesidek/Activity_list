@@ -8,7 +8,7 @@ import 'package:memory_hive/ui/widgets/activity_calendar.dart';
 import 'package:memory_hive/ui/widgets/activity_card.dart';
 
 class ActivitiesPage extends StatefulWidget {
-  const ActivitiesPage({super.key});
+  const ActivitiesPage({Key? key}) : super(key: key);
 
   @override
   State<ActivitiesPage> createState() => _ActivitiesPageState();
@@ -37,18 +37,54 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
         ),
       ],
       child: SafeArea(
-          child: Scaffold(
-            backgroundColor: kColorLittleBlue,
-        appBar: AppBar(
-          backgroundColor: kColorPurple,
-          title: Text("Activities"),
+        child: Scaffold(
+          backgroundColor: kColorLittleBlue,
+          appBar: AppBar(
+            backgroundColor: kColorPurple,
+            title: Text("Activities"),
+          ),
+          body: Column(
+            children: [
+              // Calendar section not in the scroll area
+              ActivityCalendar(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 20), // Add some spacing between calendar and cards
+                      BlocBuilder<ActivitiesBloc, ActivitiesState>(
+                        builder: (context, state) {
+                          if (state is ActivitiesChangedState) {
+                            return Column(
+                              children: state.activities.map((activity) {
+                                return ActivityCard(activity: activity);
+                              }).toList(),
+                            );
+                          } else {
+                            return Container(); // Return empty container if state is not ActivitiesChangedState
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        body: Column(
-          children: [
-            ActivityCalendar(),
-          ActivityCard(activity: ActivityModel(date: DateTime.now(), title: "Title", description: "Description", time: DateTime.now()))],
-        ),
-      )),
+      ),
     );
   }
 }
+
+
+
+
+
+// ActivityCard(
+//                 activity: ActivityModel(
+//                     date: DateTime.now(),
+//                     title: "Title",
+//                     description: "Description",
+//                     time: TimeOfDay(hour: 12, minute: 00))),

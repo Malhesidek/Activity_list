@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 
 class ActivityModel {
   final int? id;
@@ -8,7 +9,8 @@ class ActivityModel {
   Uint8List? image;
   String title;
   String? description;
-  DateTime? time;
+  TimeOfDay? time; // Додав TimeOfDay з пакету flutter/material.dart
+
   ActivityModel({
     this.id,
     required this.date,
@@ -24,7 +26,7 @@ class ActivityModel {
     Uint8List? image,
     String? title,
     String? description,
-    DateTime? time,
+    TimeOfDay? time,
   }) {
     return ActivityModel(
       id: id ?? this.id,
@@ -39,22 +41,22 @@ class ActivityModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'date': date.millisecondsSinceEpoch,
-      'image': image,
+      'date': date.toIso8601String().substring(0, 10),
+      'image': image != null ? base64Encode(image!) : null,
       'title': title,
       'description': description,
-      'time': time?.millisecondsSinceEpoch,
+      'time': time != null ? '${time!.hour}:${time!.minute}' : null, // Форматування часу до рядка "HH:mm"
     };
   }
 
   factory ActivityModel.fromMap(Map<String, dynamic> map) {
     return ActivityModel(
       id: map['id'] != null ? map['id'] as int : null,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
-      image: map['image'] != null ? Base64Decoder().convert(map['image']) : null,
+      date: DateTime.parse(map['date'] as String),
+      image: map['image'] != null ? base64Decode(map['image'] as String) : null,
       title: map['title'] as String,
-      description: map['description'] != null ? map['description'] as String : null,
-      time: map['time'] != null ? DateTime.fromMillisecondsSinceEpoch(map['time'] as int) : null,
+      description: map['description'] as String?,
+      time: map['time'] != null ? _parseTimeOfDay(map['time'] as String) : null,
     );
   }
 
@@ -65,5 +67,10 @@ class ActivityModel {
   @override
   String toString() {
     return 'ActivityModel(id: $id, date: $date, image: $image, title: $title, description: $description, time: $time)';
+  }
+
+  static TimeOfDay _parseTimeOfDay(String timeString) {
+    final parts = timeString.split(':');
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
   }
 }

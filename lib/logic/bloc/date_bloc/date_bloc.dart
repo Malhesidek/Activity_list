@@ -29,7 +29,7 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       emit(DateChangedState(
           dateModel: currentState.dateModel.copyWith(chosenDay: newDate)));
     }
-    log("$state");
+    log("DateState: $state");
   }
 
   _onChangedMonth(DateChangedMonthEvent event, Emitter<DateState> emit) async {
@@ -43,6 +43,6 @@ class DateBloc extends Bloc<DateEvent, DateState> {
       emit(DateChangedState(
           dateModel: currentState.dateModel.copyWith(chosenMonth: newMonth, activitiesNumber: activitiesNumber)));
     }
-    log("$state");
+    log("DateState: $state");
   }
 }

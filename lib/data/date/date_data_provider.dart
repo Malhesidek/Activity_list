@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this, unnecessary_brace_in_string_interps
+
 import 'package:memory_hive/data/database_provider.dart';
 import 'dart:developer';
 

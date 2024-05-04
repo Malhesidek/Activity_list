@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_this, unnecessary_brace_in_string_interps
 import 'dart:developer';
 
 import 'package:memory_hive/data/database_provider.dart';
@@ -59,15 +59,17 @@ class ActivityDataProvider {
     log('DELETED $data');
   }
 
-  Future<List<Map<String, Object?>>> fetchActivitiesByDay(DateTime selectedDay) async {
+  Future<List<Map<String, Object?>>> fetchActivitiesByDay(
+      DateTime selectedDay) async {
     int year = selectedDay.year;
     int month = selectedDay.month;
     int day = selectedDay.day;
 
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities
-    WHERE strftime('%Y', date) = ? AND strftime('%m', date) = ? AND strftime('%d', date) = ?''', ['$year', '$month', '$day']);
-    log("${data}");
+    WHERE strftime('%Y-%m-%d', date) = ?''', [selectedDay.toIso8601String().substring(0,10)]);
+    log("Selected day: " + selectedDay.toIso8601String());
+    log("dataProvider.fetchActivitiesByDay${data}");
     return data;
   }
 }

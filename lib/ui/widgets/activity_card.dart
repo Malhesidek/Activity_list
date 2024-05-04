@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memory_hive/constants.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
+import 'package:memory_hive/logic/bloc/activities_bloc/activities_bloc.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityModel activity;
@@ -14,11 +16,8 @@ class ActivityCard extends StatelessWidget {
     const double sizedBoxHeight = 14;
     return Container(
       decoration: BoxDecoration(
-        color: kColorWhite,
-        borderRadius: BorderRadius.circular(8)
-      ),
+          color: kColorWhite, borderRadius: BorderRadius.circular(8)),
       width: MediaQuery.of(context).size.width,
-      
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // if (activity.image != null)
@@ -54,12 +53,18 @@ class ActivityCard extends StatelessWidget {
                   children: [
                     SizedBox(height: sizedBoxHeight),
                     Text(
-                      activity.time.toString(),
+                      "${activity.time!.hour}:${activity.time!.minute.toString().length == 1 ? "0${activity.time!.minute}" : activity.time!.minute}",
                       style: kTextDefault,
                     ),
                   ],
                 ),
               SizedBox(height: sizedBoxHeight),
+              // if (BlocProvider.of<ActivitiesBloc>(context).state
+              //     is ActivitiesChangedState)
+              //   Text((BlocProvider.of<ActivitiesBloc>(context).state
+              //           as ActivitiesChangedState)
+              //       .activities
+              //       .toString())
             ],
           ),
         )

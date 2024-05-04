@@ -43,7 +43,7 @@ class ActivityRepo {
     final data = await activityDataProvider.fetchActivitiesByDay(chosenDay);
     List<ActivityModel> activities = List.generate(
         data.length, (index) => ActivityModel.fromJson(data[index]));
-    log("$activities");
+    log("fetchActivitiesByDay: $activities");
     return activities;
   }
 }

@@ -1,5 +1,7 @@
 
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,8 +27,8 @@ class _ExampleCalendarState extends State<ExampleCalendar> {
         setState(() {
           _selectedDay = selectedDay;
           _focusedDay = focusedDay;
-          print("Selected day $selectedDay");
-          print("My selected day $_selectedDay");
+          log("Selected day $selectedDay");
+          log("My selected day $_selectedDay");
         });
       },
       selectedDayPredicate: (day) {
@@ -35,7 +37,7 @@ class _ExampleCalendarState extends State<ExampleCalendar> {
       onPageChanged: (focusedDay) {
         setState(() {
           _focusedDay = focusedDay;
-          print(_focusedDay);
+          log(_focusedDay.toString());
         });
       },
     );

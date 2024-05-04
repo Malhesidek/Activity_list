@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:memory_hive/data/activity/activity_data_provider.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/data/activity/activity_repo.dart';
 import 'package:memory_hive/logic/bloc/date_bloc/date_bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'activities_event.dart';
 part 'activities_state.dart';
@@ -25,6 +25,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     dateSubscription = dateBloc.stream.listen((dateState) {
       if (dateState is DateChangedState) {
         add(ActivitiesFetchByDayEvent(day: dateState.dateModel.chosenDay!));
+        log("AvtivitiesBloc: $state");
       }
     });
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'dart:developer';
 
 import 'package:memory_hive/data/date/date_data_provider.dart';
