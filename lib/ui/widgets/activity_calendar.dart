@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:memory_hive/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../logic/bloc/date_bloc/date_bloc.dart';
@@ -36,6 +37,17 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
     return BlocBuilder<DateBloc, DateState>(
       builder: (context, state) {
         return TableCalendar(
+          calendarStyle: CalendarStyle(
+            selectedDecoration: BoxDecoration(
+              color: kColorPurple,
+              shape: BoxShape.circle,
+            ),
+            todayDecoration: BoxDecoration(
+              color: kColorLittlePurple,
+              shape: BoxShape.circle,
+              
+            ),
+          ),
           focusedDay: _focusedDay,
           firstDay: _firstDay,
           lastDay: _lastDay,

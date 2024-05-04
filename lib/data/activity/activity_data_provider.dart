@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_this, unnecessary_brace_in_string_interps
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_this, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings
 import 'dart:developer';
 
 import 'package:memory_hive/data/database_provider.dart';
@@ -61,9 +61,6 @@ class ActivityDataProvider {
 
   Future<List<Map<String, Object?>>> fetchActivitiesByDay(
       DateTime selectedDay) async {
-    int year = selectedDay.year;
-    int month = selectedDay.month;
-    int day = selectedDay.day;
 
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities

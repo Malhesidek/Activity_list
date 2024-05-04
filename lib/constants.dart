@@ -5,6 +5,7 @@ const kFontLato = "Lato";
 
 const kColorLinearGradient =
     LinearGradient(colors: [Color(0xffA879F5), Color(0xff685FD6)]);
+const kColorLittlePurple = Color(0xffA879F5);
 const kColorPurple = Color(0xff866BE4);
 
 const kColorWhite = Colors.white;

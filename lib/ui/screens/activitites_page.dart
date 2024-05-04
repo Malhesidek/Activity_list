@@ -1,7 +1,8 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memory_hive/constants.dart';
-import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/logic/bloc/activities_bloc/activities_bloc.dart';
 import 'package:memory_hive/logic/bloc/date_bloc/date_bloc.dart';
 import 'package:memory_hive/ui/widgets/activity_calendar.dart';
@@ -22,6 +23,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   void initState() {
     super.initState();
     dateBloc = DateBloc();
+    dateBloc.add(DateChangedDayEvent(chosenDay: DateTime.now()));
     activitiesBloc = ActivitiesBloc(dateBloc);
   }
 
@@ -38,6 +40,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       ],
       child: SafeArea(
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+              shape: CircleBorder(),
+              backgroundColor: kColorPurple,
+              child: Icon(Icons.add, color: kColorWhite),
+              onPressed: () {}),
           backgroundColor: kColorLittleBlue,
           appBar: AppBar(
             backgroundColor: kColorPurple,
@@ -50,16 +57,15 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 builder: (context, state) {
                   return ExpansionTile(
                     title: dateBloc.state is DateChangedState
-                        ? Text((dateBloc.state as DateChangedState)
-                            .dateModel
-                            .chosenDay
-                            .toString()
-                            .substring(0, 10))
+                        ? Text(
+                            "Selected day: ${(dateBloc.state as DateChangedState).dateModel.chosenDay.toString().substring(0, 10)}",
+                          )
                         : Text("Select a date"),
                     children: [
                       ActivityCalendar(),
                     ],
                     maintainState: true,
+                    initiallyExpanded: true,
                   );
                 },
               ),
@@ -74,6 +80,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                               20), // Add some spacing between calendar and cards
                       BlocBuilder<ActivitiesBloc, ActivitiesState>(
                         builder: (context, state) {
+                          if (state is ActivitiesLoadingState)
+                            // ignore: curly_braces_in_flow_control_structures
+                            return CircularProgressIndicator();
                           if (state is ActivitiesChangedState) {
                             return Column(
                               children: state.activities.map((activity) {
