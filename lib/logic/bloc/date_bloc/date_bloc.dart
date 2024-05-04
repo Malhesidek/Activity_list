@@ -25,11 +25,12 @@ class DateBloc extends Bloc<DateEvent, DateState> {
     if (currentState is DateChangedState) {
       emit(DateChangedState(
           dateModel: currentState.dateModel.copyWith(chosenDay: newDate)));
+          log("DateState: ${(state as DateChangedState).dateModel.toString()}");
     } else if (currentState is DateInitial) {
       emit(DateChangedState(
           dateModel: currentState.dateModel.copyWith(chosenDay: newDate)));
     }
-    log("DateState: $state");
+    
   }
 
   _onChangedMonth(DateChangedMonthEvent event, Emitter<DateState> emit) async {
@@ -38,11 +39,15 @@ class DateBloc extends Bloc<DateEvent, DateState> {
     final activitiesNumber = await _dateRepo.fetchActivitiesByMonth(newMonth);
     if (currentState is DateChangedState) {
       emit(DateChangedState(
-          dateModel: currentState.dateModel.copyWith(chosenMonth: newMonth, activitiesNumber: activitiesNumber)));
+          dateModel: currentState.dateModel.copyWith(
+              chosenMonth: newMonth, activitiesNumber: activitiesNumber)));
+              log("DateState: ${(state as DateChangedState).dateModel.toString()}");
     } else if (currentState is DateInitial) {
       emit(DateChangedState(
-          dateModel: currentState.dateModel.copyWith(chosenMonth: newMonth, activitiesNumber: activitiesNumber)));
+          dateModel: currentState.dateModel.copyWith(
+              chosenMonth: newMonth, activitiesNumber: activitiesNumber)));
+              log("DateState: ${(state as DateChangedState).dateModel.toString()}");
     }
-    log("DateState: $state");
+    // log("DateState: $state");
   }
 }

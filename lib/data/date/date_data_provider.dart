@@ -15,8 +15,8 @@ class DateDataProvider {
 
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities
-    WHERE strftime('%Y', date) = ? AND strftime('%m', date) = ?''', ['$year', '$month']);
-    log("${data}");
+    WHERE strftime('%Y-%m', date) = ?''', [selectedMonth.toIso8601String().substring(0,7)]);
+    log("${selectedMonth.toIso8601String().substring(0,7)}");
     return data;
   }
 

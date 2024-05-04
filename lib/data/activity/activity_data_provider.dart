@@ -65,7 +65,7 @@ class ActivityDataProvider {
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities
     WHERE strftime('%Y-%m-%d', date) = ?''', [selectedDay.toIso8601String().substring(0,10)]);
-    log("Selected day: " + selectedDay.toIso8601String());
+    // log("Selected day: " + selectedDay.toIso8601String());
     log("dataProvider.fetchActivitiesByDay${data}");
     return data;
   }

@@ -25,7 +25,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     dateSubscription = dateBloc.stream.listen((dateState) {
       if (dateState is DateChangedState) {
         add(ActivitiesFetchByDayEvent(day: dateState.dateModel.chosenDay!));
-        log("AvtivitiesBloc: $state");
+        // log("AvtivitiesBloc: $state");
       }
     });
   }

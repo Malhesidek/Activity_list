@@ -65,8 +65,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
                 log("New state for the day");
               });
 
-              log("Selected day: $_selectedDay");
-              log("Focused day: $_focusedDay");
+              // log("Selected day: $_selectedDay");
+              // log("Focused day: $_focusedDay");
             }
           },
           onPageChanged: (focusedDay) {
@@ -74,8 +74,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
               _focusedDay = focusedDay;
               dateBloc.add(DateChangedMonthEvent(chosenMonth: _focusedDay));
             });
-            log("Selected day: $_selectedDay");
-            log("Focused day: $_focusedDay");
+            // log("Selected day: $_selectedDay");
+            // log("Focused day: $_focusedDay");
           },
         );
       },

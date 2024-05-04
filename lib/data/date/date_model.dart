@@ -21,4 +21,7 @@ class DateModel {
     activitiesNumber: activitiesNumber ?? this.activitiesNumber,
   );
 }
+
+  @override
+  String toString() => 'DateModel(chosenDay: $chosenDay, chosenMonth: $chosenMonth, activitiesNumber: $activitiesNumber)';
 }
