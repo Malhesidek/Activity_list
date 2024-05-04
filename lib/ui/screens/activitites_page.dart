@@ -46,13 +46,32 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           body: Column(
             children: [
               // Calendar section not in the scroll area
-              ActivityCalendar(),
+              BlocBuilder<DateBloc, DateState>(
+                builder: (context, state) {
+                  return ExpansionTile(
+                    title: dateBloc.state is DateChangedState
+                        ? Text((dateBloc.state as DateChangedState)
+                            .dateModel
+                            .chosenDay
+                            .toString()
+                            .substring(0, 10))
+                        : Text("Select a date"),
+                    children: [
+                      ActivityCalendar(),
+                    ],
+                    maintainState: true,
+                  );
+                },
+              ),
+
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 20), // Add some spacing between calendar and cards
+                      SizedBox(
+                          height:
+                              20), // Add some spacing between calendar and cards
                       BlocBuilder<ActivitiesBloc, ActivitiesState>(
                         builder: (context, state) {
                           if (state is ActivitiesChangedState) {
