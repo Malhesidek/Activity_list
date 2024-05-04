@@ -40,19 +40,20 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
           calendarStyle: CalendarStyle(
             selectedDecoration: BoxDecoration(
               color: kColorPurple,
-              shape: BoxShape.circle,
             ),
+            todayTextStyle: TextStyle(color: kColorBlack),
             todayDecoration: BoxDecoration(
-              color: kColorLittlePurple,
-              shape: BoxShape.circle,
-              
+              border: Border.all(color: kColorPurple),
+              color: kColorLittleBlue,
             ),
+            markerDecoration:
+                BoxDecoration(color: kColorPurple, shape: BoxShape.circle),
+            markersMaxCount: 3,
           ),
           focusedDay: _focusedDay,
           firstDay: _firstDay,
           lastDay: _lastDay,
           headerStyle: HeaderStyle(formatButtonVisible: false),
-          // availableCalendarFormats: const {CalendarFormat.month: 'month'},
           startingDayOfWeek: StartingDayOfWeek.monday,
           calendarFormat: _calendarFormat,
           selectedDayPredicate: (day) => isSameDay(_focusedDay, day),
@@ -64,9 +65,6 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
                 dateBloc.add(DateChangedDayEvent(chosenDay: _focusedDay));
                 log("New state for the day");
               });
-
-              // log("Selected day: $_selectedDay");
-              // log("Focused day: $_focusedDay");
             }
           },
           onPageChanged: (focusedDay) {
@@ -74,9 +72,31 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
               _focusedDay = focusedDay;
               dateBloc.add(DateChangedMonthEvent(chosenMonth: _focusedDay));
             });
-            // log("Selected day: $_selectedDay");
-            // log("Focused day: $_focusedDay");
           },
+          eventLoader: (day) {
+            final stringDay = day.toString().replaceAll('Z', '');
+            final formattedDay = DateTime.parse(stringDay);
+            final countEvents = (state as DateChangedState)
+                .dateModel
+                .activitiesNumber?[formattedDay];
+            return countEvents != null
+                ? List.generate(countEvents, (index) => 1)
+                : [];
+          },
+          calendarBuilders: CalendarBuilders(
+            singleMarkerBuilder: (context, day, event) {
+              return Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: day == _selectedDay
+                        ? kColorWhite
+                        : kColorPurple), //Change color
+                width: 4.5,
+                height: 4.5,
+                margin: const EdgeInsets.symmetric(horizontal: 1.5),
+              );
+            },
+          ),
         );
       },
     );

@@ -69,7 +69,6 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   );
                 },
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

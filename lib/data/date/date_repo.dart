@@ -22,7 +22,7 @@ class DateRepo {
       List<Map<String, Object?>> activitiesList) {
     Map<DateTime, int> activitiesCountByDate = {};
     for (var activity in activitiesList) {
-      DateTime date = activity['date'] as DateTime;
+      DateTime date = DateTime.parse(activity['date'].toString());
       activitiesCountByDate[date] = (activitiesCountByDate[date] ?? 0) + 1;
     }
     return activitiesCountByDate;

@@ -16,7 +16,7 @@ class DateDataProvider {
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities
     WHERE strftime('%Y-%m', date) = ?''', [selectedMonth.toIso8601String().substring(0,7)]);
-    log("${selectedMonth.toIso8601String().substring(0,7)}");
+    log("date_data_provider: Number of activities ${data}");
     return data;
   }
 
