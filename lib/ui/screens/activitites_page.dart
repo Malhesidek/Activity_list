@@ -55,7 +55,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             .dateModel
                             .chosenDay!,
                         title: "Blank Activity"));
-                // activitiesBloc.add(ActivitiesInsertedEvent(activity: newActivity as ActivityModel));
+                activitiesBloc.add(ActivitiesInsertedEvent(activity: newActivity as ActivityModel));
                 log("$newActivity");
               }),
           backgroundColor: kColorLittleBlue,
