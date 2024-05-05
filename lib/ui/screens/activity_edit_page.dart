@@ -46,12 +46,11 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   if ((state as ActivityEditChangedState).activity.title ==
                       "") {
                     return null;
-                  }
-                  else
-                  Navigator.pop(
-                      context,
-                      (activityEditBloc.state as ActivityEditChangedState)
-                          .activity);
+                  } else
+                    Navigator.pop(
+                        context,
+                        (activityEditBloc.state as ActivityEditChangedState)
+                            .activity);
                 },
               );
             },
@@ -59,21 +58,20 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         ),
         body: Column(
           children: [
-            if ((activityEditBloc.state as ActivityEditChangedState)
-                    .activity
-                    .image !=
-                null)
-              Image.memory((activityEditBloc.state as ActivityEditChangedState)
-                  .activity
-                  .image!)
-            else
-              ButtonAddCover(),
+            BlocBuilder<ActivityEditBloc, ActivityEditState>(
+              builder: (context, state) {
+                if (state is ActivityEditChangedState &&
+                    state.activity.image != null) {
+                  return Image.memory(state.activity.image!);
+                } else {
+                  return ButtonAddCover();
+                }
+              },
+            ),
             Row(
               children: [
                 Expanded(flex: 2, child: TextFieldTitle()),
-                Expanded(
-                    flex: 1,
-                    child: ButtonSetTime())
+                Expanded(flex: 1, child: ButtonSetTime())
               ],
             )
           ],
