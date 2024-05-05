@@ -7,6 +7,7 @@ import 'package:memory_hive/constants.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/logic/bloc/acitvity_edit_bloc/activity_edit_bloc.dart';
 import 'package:memory_hive/ui/widgets/button_add_cover_widget.dart';
+import 'package:memory_hive/ui/widgets/button_set_time_widget.dart';
 import 'package:memory_hive/ui/widgets/text_field_title_widget.dart';
 
 class ActivityEditPage extends StatefulWidget {
@@ -69,11 +70,10 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ButtonAddCover(),
             Row(
               children: [
-                Expanded(flex: 3, child: TextFieldTitle()),
+                Expanded(flex: 2, child: TextFieldTitle()),
                 Expanded(
                     flex: 1,
-                    child: OutlinedButton(
-                        onPressed: () {}, child: Text("Set time")))
+                    child: ButtonSetTime())
               ],
             )
           ],

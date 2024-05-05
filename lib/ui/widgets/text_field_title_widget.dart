@@ -22,10 +22,12 @@ class _TextFieldTitleState extends State<TextFieldTitle> {
           initialValue: (state as ActivityEditChangedState).activity.title,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderSide: BorderSide.none),
-            hintText: "Activity Name",
-            hintStyle: TextStyle(fontWeight: FontWeight.bold)
+            hintText: "Enter your activity here...",
+            hintStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
-          
+          maxLines: 1,
+          maxLength: 25,
+          textAlign: TextAlign.left,
           onChanged: (text) {
             setState(() {
               BlocProvider.of<ActivityEditBloc>(context).add(ActivityChangedTitleEvent(title: text));
