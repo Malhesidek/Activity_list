@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memory_hive/constants.dart';
+import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/logic/bloc/activities_bloc/activities_bloc.dart';
 import 'package:memory_hive/logic/bloc/date_bloc/date_bloc.dart';
 import 'package:memory_hive/ui/widgets/activity_calendar.dart';
@@ -46,7 +47,16 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
               shape: CircleBorder(),
               backgroundColor: kColorPurple,
               child: Icon(Icons.add, color: kColorWhite),
-              onPressed: () {}),
+              onPressed: () async {
+                final newActivity = await Navigator.pushNamed(
+                    context, '/activity_edit',
+                    arguments: ActivityModel(
+                        date: (dateBloc.state as DateChangedState)
+                            .dateModel
+                            .chosenDay!,
+                        title: "Blank Activity"));
+                log("$newActivity");
+              }),
           backgroundColor: kColorLittleBlue,
           appBar: AppBar(
             backgroundColor: kColorPurple,
