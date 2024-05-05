@@ -8,6 +8,7 @@ import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/logic/bloc/acitvity_edit_bloc/activity_edit_bloc.dart';
 import 'package:memory_hive/ui/widgets/button_add_cover_widget.dart';
 import 'package:memory_hive/ui/widgets/button_set_time_widget.dart';
+import 'package:memory_hive/ui/widgets/change_cover_widget.dart';
 import 'package:memory_hive/ui/widgets/text_field_title_widget.dart';
 
 class ActivityEditPage extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               builder: (context, state) {
                 if (state is ActivityEditChangedState &&
                     state.activity.image != null) {
-                  return Image.memory(state.activity.image!);
+                  return ChangeCoverWidget();
                 } else {
                   return ButtonAddCover();
                 }
@@ -80,3 +81,4 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     );
   }
 }
+
