@@ -53,8 +53,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final quill.QuillController _quillController =
-    //     quill.QuillController.basic();
     return BlocProvider(
       create: (context) => activityEditBloc,
       child: SafeArea(
