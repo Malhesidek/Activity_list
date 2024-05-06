@@ -50,36 +50,57 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             builder: (context, state) {
               return IconButton(
                 icon: Icon(Icons.arrow_back_ios_new),
-                onPressed: () async {
-                  if ((state as ActivityEditChangedState).activity.title ==
-                      "") {
-                    return null;
-                  } else {
-                    activityEditBloc.add(ActivityChangedDescriptionEvent(
-                        description: jsonEncode(
-                            _quillController.document.toDelta().toJson())));
-                    log(jsonEncode(
-                        _quillController.document.toDelta().toJson()));
-                    log((activityEditBloc.state as ActivityEditChangedState)
-                        .activity
-                        .description
-                        .toString());
-                    while ((activityEditBloc.state as ActivityEditChangedState)
-                            .activity
-                            .description !=
-                        jsonEncode(
-                            _quillController.document.toDelta().toJson())) {
-                      await Future.delayed(const Duration(milliseconds: 100));
-                    }
-                    Navigator.pop(
-                        context,
-                        (activityEditBloc.state as ActivityEditChangedState)
-                            .activity);
-                  }
+                onPressed: () {
+                  Navigator.pop(context);
                 },
               );
             },
           ),
+          actions: [
+            Container(
+              child: BlocBuilder<ActivityEditBloc, ActivityEditState>(
+                builder: (context, state) {
+                  return IconButton(
+                      onPressed: () async {
+                        if ((state as ActivityEditChangedState)
+                                .activity
+                                .title ==
+                            "") {
+                          return null;
+                        } else {
+                          activityEditBloc.add(ActivityChangedDescriptionEvent(
+                              description: jsonEncode(_quillController.document
+                                  .toDelta()
+                                  .toJson())));
+                          log(jsonEncode(
+                              _quillController.document.toDelta().toJson()));
+                          log((activityEditBloc.state
+                                  as ActivityEditChangedState)
+                              .activity
+                              .description
+                              .toString());
+                          while ((activityEditBloc.state
+                                      as ActivityEditChangedState)
+                                  .activity
+                                  .description !=
+                              jsonEncode(_quillController.document
+                                  .toDelta()
+                                  .toJson())) {
+                            await Future.delayed(
+                                const Duration(milliseconds: 100));
+                          }
+                          Navigator.pop(
+                              context,
+                              (activityEditBloc.state
+                                      as ActivityEditChangedState)
+                                  .activity);
+                        }
+                      },
+                      icon: Icon(Icons.save));
+                },
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(

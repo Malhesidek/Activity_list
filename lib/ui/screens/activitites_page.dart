@@ -55,8 +55,14 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             .dateModel
                             .chosenDay!,
                         title: "Blank Activity"));
-                activitiesBloc.add(ActivitiesInsertedEvent(activity: newActivity as ActivityModel));
-                log("$newActivity");
+                if (newActivity == null) {
+                  return;
+                } else {
+                  activitiesBloc.add(ActivitiesInsertedEvent(
+                      activity: newActivity as ActivityModel));
+                  dateBloc.add(DateChangedMonthEvent(chosenMonth: newActivity.date));
+                  log("The new activity: $newActivity");
+                }
               }),
           backgroundColor: kColorLittleBlue,
           appBar: AppBar(

@@ -21,10 +21,14 @@ class ActivityCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         if (activity.image != null)
-        ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-          child: Image.memory(activity.image!,fit: BoxFit.cover, height: 50, width: MediaQuery.of(context).size.width - 20,) 
-        ),
+          ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+              child: Image.memory(
+                activity.image!,
+                fit: BoxFit.cover,
+                height: 50,
+                width: MediaQuery.of(context).size.width - 20,
+              )),
         Padding(
           padding: const EdgeInsets.only(left: 12),
           child: Column(
@@ -67,12 +71,22 @@ class ActivityCard extends StatelessWidget {
   }
 }
 
-jsonToPlainText(String jsonString){
+jsonToPlainText(String jsonString) {
+  if (jsonString == null) return null;
   List<dynamic> parsedJson = jsonDecode(jsonString);
   List<String> textValues = [];
   parsedJson.forEach((element) {
-      String textValue = element["insert"];
-      textValues.add(textValue);
-    });
-  return textValues.join().substring(0, 20);
+    String textValue = element["insert"];
+    textValues.add(textValue);
+  });
+  String textResult = textValues.join();
+  if (textResult.length > 50) {
+    if (textResult.split(' ').length > 5) {
+      return textResult.split(' ').getRange(0, 4).join(' ');
+    }
+    else {
+      return textResult.substring(0,50);
+    }
+  }
+  return textResult;
 }
