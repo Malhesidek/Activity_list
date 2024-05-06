@@ -72,7 +72,6 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           ),
           body: Column(
             children: [
-              // Calendar section not in the scroll area
               BlocBuilder<DateBloc, DateState>(
                 builder: (context, state) {
                   return ExpansionTile(
@@ -94,9 +93,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(
-                          height:
-                              20), // Add some spacing between calendar and cards
+                      SizedBox(height: 20),
                       BlocBuilder<ActivitiesBloc, ActivitiesState>(
                         builder: (context, state) {
                           if (state is ActivitiesLoadingState)
@@ -123,6 +120,30 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                         log("The edit activity: $editActivity");
                                       }
                                     },
+                                    onLongPress: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              width: double.infinity,
+                                              child: ListTile(
+                                                  leading: Icon(Icons.delete),
+                                                  title:
+                                                      Text("Delete activity"),
+                                                  onTap: () {
+                                                    activitiesBloc.add(
+                                                        ActivitiesDeletedEvent(
+                                                            id: activity.id!));
+                                                    dateBloc.add(
+                                                        DateChangedMonthEvent(
+                                                            chosenMonth:
+                                                                activity.date));
+                                                    Navigator.pop(context);
+                                                  }),
+                                            );
+                                          });
+                                      log("Long pressed");
+                                    },
                                     child: ActivityCard(activity: activity));
                               }).toList(),
                             );
@@ -142,14 +163,3 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
     );
   }
 }
-
-
-
-
-
-// ActivityCard(
-//                 activity: ActivityModel(
-//                     date: DateTime.now(),
-//                     title: "Title",
-//                     description: "Description",
-//                     time: TimeOfDay(hour: 12, minute: 00))),
