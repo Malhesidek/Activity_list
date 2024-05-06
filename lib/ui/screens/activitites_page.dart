@@ -47,24 +47,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
               shape: CircleBorder(),
               backgroundColor: kColorPurple,
               child: Icon(Icons.add, color: kColorWhite),
-              onPressed: () async {
-                final newActivity = await Navigator.pushNamed(
-                    context, '/activity_edit',
-                    arguments: ActivityModel(
-                        date: (dateBloc.state as DateChangedState)
-                            .dateModel
-                            .chosenDay!,
-                        title: "Blank Activity"));
-                if (newActivity == null) {
-                  return;
-                } else {
-                  activitiesBloc.add(ActivitiesInsertedEvent(
-                      activity: newActivity as ActivityModel));
-                  dateBloc.add(
-                      DateChangedMonthEvent(chosenMonth: newActivity.date));
-                  log("The new activity: $newActivity");
-                }
-              }),
+              onPressed: _addActivity),
           backgroundColor: kColorLittleBlue,
           appBar: AppBar(
             backgroundColor: kColorPurple,
@@ -75,11 +58,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
               BlocBuilder<DateBloc, DateState>(
                 builder: (context, state) {
                   return ExpansionTile(
-                    title: dateBloc.state is DateChangedState
-                        ? Text(
-                            "Selected day: ${(dateBloc.state as DateChangedState).dateModel.chosenDay.toString().substring(0, 10)}",
-                          )
-                        : Text("Select a date"),
+                    title: _calendarText(),
                     children: [
                       ActivityCalendar(),
                     ],
@@ -103,48 +82,8 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             return Column(
                               children: state.activities.map((activity) {
                                 return GestureDetector(
-                                    onTap: () async {
-                                      log("$activity");
-                                      final editActivity =
-                                          await Navigator.pushNamed(
-                                              context, '/activity_edit',
-                                              arguments: activity.copyWith());
-                                      if (editActivity == null) {
-                                        return;
-                                      } else {
-                                        activitiesBloc.add(
-                                            ActivitiesEditedEvent(
-                                                activity: editActivity
-                                                    as ActivityModel));
-                                        dateBloc.add(DateChangedMonthEvent(
-                                            chosenMonth: editActivity.date));
-                                        log("The edit activity: $editActivity");
-                                      }
-                                    },
-                                    onLongPress: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Container(
-                                              width: double.infinity,
-                                              child: ListTile(
-                                                  leading: Icon(Icons.delete),
-                                                  title:
-                                                      Text("Delete activity"),
-                                                  onTap: () {
-                                                    activitiesBloc.add(
-                                                        ActivitiesDeletedEvent(
-                                                            id: activity.id!));
-                                                    dateBloc.add(
-                                                        DateChangedMonthEvent(
-                                                            chosenMonth:
-                                                                activity.date));
-                                                    Navigator.pop(context);
-                                                  }),
-                                            );
-                                          });
-                                      log("Long pressed");
-                                    },
+                                    onTap: _openActivity(activity),
+                                    onLongPress: _deleteActivity(activity),
                                     child: ActivityCard(activity: activity));
                               }).toList(),
                             );
@@ -162,5 +101,74 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
         ),
       ),
     );
+  }
+
+  _addActivity() async {
+    final newActivity = await Navigator.pushNamed(context, '/activity_edit',
+        arguments: ActivityModel(
+            date: (dateBloc.state as DateChangedState).dateModel.chosenDay!,
+            title: "Blank Activity"));
+    if (newActivity == null) {
+      return;
+    } else {
+      activitiesBloc
+          .add(ActivitiesInsertedEvent(activity: newActivity as ActivityModel));
+      dateBloc.add(DateChangedMonthEvent(chosenMonth: newActivity.date));
+      log("The new activity: $newActivity");
+    }
+  }
+
+  _openActivity(activity) {
+    return () async {
+      log("$activity");
+      final editActivity = await Navigator.pushNamed(context, '/activity_edit',
+          arguments: activity.copyWith());
+      if (editActivity == null) {
+        return;
+      } else {
+        activitiesBloc.add(
+            ActivitiesEditedEvent(activity: editActivity as ActivityModel));
+        dateBloc.add(DateChangedMonthEvent(chosenMonth: editActivity.date));
+        log("The edit activity: $editActivity");
+      }
+    };
+  }
+
+  _deleteActivity(activity) {
+    return () {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              width: double.infinity,
+              child: ListTile(
+                  leading: Icon(Icons.delete),
+                  title: Text("Delete activity"),
+                  onTap: () {
+                    activitiesBloc
+                        .add(ActivitiesDeletedEvent(id: activity.id!));
+                    dateBloc
+                        .add(DateChangedMonthEvent(chosenMonth: activity.date));
+                    Navigator.pop(context);
+                  }),
+            );
+          });
+      log("Long pressed");
+    };
+  }
+
+  _calendarText() {
+    if (dateBloc.state is DateChangedState) {
+      return Text(
+        "Selected day: ${(dateBloc.state as DateChangedState).dateModel.chosenDay.toString().substring(0, 10)}",
+      );
+    } else {
+      return Text("Select a date");
+    }
+    // return (dateBloc.state is DateChangedState)
+    //     ? Text(
+    //         "Selected day: ${(dateBloc.state as DateChangedState).dateModel.chosenDay.toString().substring(0, 10)}",
+    //       )
+    //     : Text("Select a date");
   }
 }
