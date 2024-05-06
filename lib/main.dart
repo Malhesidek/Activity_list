@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_hive/constants.dart';
-import 'package:memory_hive/ui/screens/activitites_page.dart';
+import 'package:memory_hive/ui/screens/activities_page.dart';
 import 'package:memory_hive/ui/widgets/app_routes.dart';
 
 void main() {

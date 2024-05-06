@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
-import 'package:memory_hive/ui/screens/activitites_page.dart';
+import 'package:memory_hive/ui/screens/activities_page.dart';
 import 'package:memory_hive/ui/screens/activity_edit_page.dart';
 
 class AppRouter {
