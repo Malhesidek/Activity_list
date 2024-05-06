@@ -45,6 +45,13 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   }
 
   @override
+  void dispose() {
+    _quillController.dispose();
+    activityEditBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final quill.QuillController _quillController =
     //     quill.QuillController.basic();

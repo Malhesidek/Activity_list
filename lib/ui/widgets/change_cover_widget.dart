@@ -14,9 +14,22 @@ class ChangeCoverWidget extends StatefulWidget {
 }
 
 class _ChangeCoverWidgetState extends State<ChangeCoverWidget> {
+  late ActivityEditBloc activityEditBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    activityEditBloc = BlocProvider.of<ActivityEditBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    activityEditBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final activityEditBloc = BlocProvider.of<ActivityEditBloc>(context);
     return GestureDetector(
         onTap: () {
           showModalBottomSheet(

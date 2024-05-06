@@ -39,8 +39,10 @@ class _ButtonSetTimeState extends State<ButtonSetTime> {
                         ],
                       ),
                   initialTime: TimeOfDay(hour: 12, minute: 0));
-                BlocProvider.of<ActivityEditBloc>(context)
-                    .add(ActivityChangedTimeEvent(time: selectedTime));
+              log("Selected time: $selectedTime");
+              BlocProvider.of<ActivityEditBloc>(context)
+                  .add(ActivityChangedTimeEvent(time: selectedTime));
+              log("Seleted time state: ${state.activity.time}");
             },
             child: Text(
                 (state as ActivityEditChangedState).activity.time != null
