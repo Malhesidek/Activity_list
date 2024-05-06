@@ -60,7 +60,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         appBar: AppBar(
           title: Text(
             "Edit Activity",
-            style: kTextAppTitle,
+            style: TextStyle(color: kColorBlack, fontFamily: kFontNunitoSans, fontSize: 22),
           ),
           leading: BlocBuilder<ActivityEditBloc, ActivityEditState>(
             builder: (context, state) {

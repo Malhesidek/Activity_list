@@ -68,7 +68,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           backgroundColor: kColorLittleBlue,
           appBar: AppBar(
             backgroundColor: kColorPurple,
-            title: Text("Activities"),
+            title: Text("Activities", style: kTextAppTitle),
           ),
           body: Column(
             children: [
@@ -104,10 +104,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                               children: state.activities.map((activity) {
                                 return GestureDetector(
                                     onTap: () async {
+                                      log("$activity");
                                       final editActivity =
                                           await Navigator.pushNamed(
                                               context, '/activity_edit',
-                                              arguments: activity);
+                                              arguments: activity.copyWith());
                                       if (editActivity == null) {
                                         return;
                                       } else {
