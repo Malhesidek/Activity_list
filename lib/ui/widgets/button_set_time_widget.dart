@@ -38,7 +38,7 @@ class _ButtonSetTimeState extends State<ButtonSetTime> {
                               child: Text("Reset time", style: kTextAppTitle))
                         ],
                       ),
-                  initialTime: TimeOfDay(hour: state.activity.time!.hour, minute: state.activity.time!.minute));
+                  initialTime: state.activity.time != null ? TimeOfDay(hour: state.activity.time!.hour, minute: state.activity.time!.minute) : TimeOfDay(hour: 12, minute: 00));
               log("Selected time: $selectedTime");
               BlocProvider.of<ActivityEditBloc>(context)
                   .add(ActivityChangedTimeEvent(time: selectedTime));
