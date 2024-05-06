@@ -38,11 +38,11 @@ class _ButtonSetTimeState extends State<ButtonSetTime> {
                               child: Text("Reset time", style: kTextAppTitle))
                         ],
                       ),
-                  initialTime: TimeOfDay(hour: 12, minute: 0));
+                  initialTime: TimeOfDay(hour: state.activity.time!.hour, minute: state.activity.time!.minute));
               log("Selected time: $selectedTime");
               BlocProvider.of<ActivityEditBloc>(context)
                   .add(ActivityChangedTimeEvent(time: selectedTime));
-              log("Seleted time state: ${state.activity.time}");
+              log("Selected time state: ${state.activity.time}");
             },
             child: Text(
                 (state as ActivityEditChangedState).activity.time != null
