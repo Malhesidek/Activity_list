@@ -60,7 +60,8 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 } else {
                   activitiesBloc.add(ActivitiesInsertedEvent(
                       activity: newActivity as ActivityModel));
-                  dateBloc.add(DateChangedMonthEvent(chosenMonth: newActivity.date));
+                  dateBloc.add(
+                      DateChangedMonthEvent(chosenMonth: newActivity.date));
                   log("The new activity: $newActivity");
                 }
               }),
@@ -105,8 +106,22 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             return Column(
                               children: state.activities.map((activity) {
                                 return GestureDetector(
-                                    onTap: () {
-                                      log(activity.id.toString());
+                                    onTap: () async {
+                                      final editActivity =
+                                          await Navigator.pushNamed(
+                                              context, '/activity_edit',
+                                              arguments: activity);
+                                      if (editActivity == null) {
+                                        return;
+                                      } else {
+                                        activitiesBloc.add(
+                                            ActivitiesEditedEvent(
+                                                activity: editActivity
+                                                    as ActivityModel));
+                                        dateBloc.add(DateChangedMonthEvent(
+                                            chosenMonth: editActivity.date));
+                                        log("The edit activity: $editActivity");
+                                      }
                                     },
                                     child: ActivityCard(activity: activity));
                               }).toList(),

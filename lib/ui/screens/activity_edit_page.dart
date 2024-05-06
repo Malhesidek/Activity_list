@@ -26,17 +26,28 @@ class ActivityEditPage extends StatefulWidget {
 
 class _ActivityEditPageState extends State<ActivityEditPage> {
   late ActivityEditBloc activityEditBloc;
+  late quill.QuillController _quillController;
 
   @override
   void initState() {
     super.initState();
     activityEditBloc = ActivityEditBloc(widget.givenActivity);
+    _quillController = quill.QuillController.basic();
+    if ((activityEditBloc.state as ActivityEditChangedState)
+            .activity
+            .description !=
+        null) {
+      _quillController.document = Document.fromJson(jsonDecode(
+          (activityEditBloc.state as ActivityEditChangedState)
+              .activity
+              .description!));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final quill.QuillController _quillController =
-        quill.QuillController.basic();
+    // final quill.QuillController _quillController =
+    //     quill.QuillController.basic();
     return BlocProvider(
       create: (context) => activityEditBloc,
       child: SafeArea(
