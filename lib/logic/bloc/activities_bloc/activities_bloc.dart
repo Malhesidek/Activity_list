@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:memory_hive/data/activity/activity_data_provider.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
 import 'package:memory_hive/data/activity/activity_repo.dart';
