@@ -72,9 +72,9 @@ class ActivityCard extends StatelessWidget {
 }
 
 jsonToPlainText(String jsonString) {
-  if (jsonString == null) return null;
   List<dynamic> parsedJson = jsonDecode(jsonString);
   List<String> textValues = [];
+  // ignore: avoid_function_literals_in_foreach_calls
   parsedJson.forEach((element) {
     String textValue = element["insert"];
     textValues.add(textValue);

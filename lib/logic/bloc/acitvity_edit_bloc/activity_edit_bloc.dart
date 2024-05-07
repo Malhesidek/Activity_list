@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
-import 'package:meta/meta.dart';
 
 part 'activity_edit_event.dart';
 part 'activity_edit_state.dart';

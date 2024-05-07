@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:memory_hive/constants.dart';
@@ -64,14 +63,12 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             },
           ),
           actions: [
-            Container(
-              child: BlocBuilder<ActivityEditBloc, ActivityEditState>(
-                builder: (context, state) {
-                  return IconButton(
-                      onPressed: _saveActivity, icon: Icon(Icons.save));
-                },
-              ),
-            )
+            BlocBuilder<ActivityEditBloc, ActivityEditState>(
+              builder: (context, state) {
+                return IconButton(
+                    onPressed: _saveActivity, icon: Icon(Icons.save));
+              },
+            ),
           ],
         ),
         body: SingleChildScrollView(

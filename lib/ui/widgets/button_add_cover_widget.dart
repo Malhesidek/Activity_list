@@ -25,11 +25,11 @@ class _ButtonAddCoverState extends State<ButtonAddCover> {
           if (selectedImage != null) {
             List<int> imageBytes = await selectedImage.readAsBytes();
             Uint8List uint8list = Uint8List.fromList(imageBytes);
-            BlocProvider.of<ActivityEditBloc>(context).add(
-                ActivityChangedImageEvent(image: uint8list));
-          } 
-          else
+            BlocProvider.of<ActivityEditBloc>(context)
+                .add(ActivityChangedImageEvent(image: uint8list));
+          } else {
             return;
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -10,9 +10,6 @@ class DateDataProvider {
       : this.databaseProvider = databaseProvider ?? DatabaseProvider();
 
   Future<List<Map<String, Object?>>> fetchActivitiesByMonth(DateTime selectedMonth) async {
-    int year = selectedMonth.year;
-    int month = selectedMonth.month;
-
     final db = await databaseProvider.database;
     var data = await db.rawQuery('''SELECT * FROM Activities
     WHERE strftime('%Y-%m', date) = ?''', [selectedMonth.toIso8601String().substring(0,7)]);
