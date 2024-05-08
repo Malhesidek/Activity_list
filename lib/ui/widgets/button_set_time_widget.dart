@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:memory_hive/constants.dart';
-import 'package:memory_hive/logic/bloc/acitvity_edit_bloc/activity_edit_bloc.dart';
+import 'package:memory_hive/logic/bloc/activity_edit_bloc/activity_edit_bloc.dart';
 
 class ButtonSetTime extends StatefulWidget {
   const ButtonSetTime({super.key});
@@ -37,20 +37,14 @@ class _ButtonSetTimeState extends State<ButtonSetTime> {
                             child: Text("Reset time", style: kTextAppTitle))
                       ],
                     ),
-                initialTime: state.activity.time != null
-                    ? TimeOfDay(
-                        hour: state.activity.time!.hour,
-                        minute: state.activity.time!.minute)
-                    : TimeOfDay(hour: 12, minute: 00));
+                initialTime: _setInitialTime());
             log("Selected time: $selectedTime");
             BlocProvider.of<ActivityEditBloc>(context)
-                .add(ActivityChangedTimeEvent(time: selectedTime));
-            log("Selected time state: ${state.activity.time}");
+                .add(ActivityEditEvent.changedTime(time: selectedTime));
+            // log("Selected time state: ${state.activity.time}");
           },
           child: Text(
-            (state as ActivityEditChangedState).activity.time != null
-                ? "${(state as ActivityEditChangedState).activity.time!.hour}:${(state as ActivityEditChangedState).activity.time!.minute.toString().length == 1 ? "0${(state as ActivityEditChangedState).activity.time!.minute}" : (state as ActivityEditChangedState).activity.time!.minute}"
-                : "Set Time",
+            _showTime(),
             style: TextStyle(
               color: kColorWhite,
             ),
@@ -58,5 +52,26 @@ class _ButtonSetTimeState extends State<ButtonSetTime> {
         );
       },
     );
+  }
+
+  // Як тут визначити стейт, якщо функція вже знаходиться поза віджетом
+  _showTime() {
+    final activityState = context.read<ActivityEditBloc>().state.maybeWhen(
+        changed: (activity) => activity.time != null
+            ? "${activity.time!.hour}:${activity.time!.minute.toString().length == 1 ? "0${activity.time!.minute}" : activity.time!.minute}"
+            : "Set Time",
+        orElse: () {});
+    return activityState;
+  }
+
+  _setInitialTime(){
+    final activityState = context.read<ActivityEditBloc>().state.maybeWhen(
+        changed: (activity) => activity.time != null
+                    ? TimeOfDay(
+                        hour: activity.time!.hour,
+                        minute: activity.time!.minute)
+                    : TimeOfDay(hour: 12, minute: 00),
+        orElse: () {});
+    return activityState;
   }
 }

@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:memory_hive/constants.dart';
 import 'package:memory_hive/data/activity/activity_model.dart';
-import 'package:memory_hive/logic/bloc/acitvity_edit_bloc/activity_edit_bloc.dart';
+import 'package:memory_hive/logic/bloc/activity_edit_bloc/activity_edit_bloc.dart';
 import 'package:memory_hive/ui/widgets/button_add_cover_widget.dart';
 import 'package:memory_hive/ui/widgets/button_set_time_widget.dart';
 import 'package:memory_hive/ui/widgets/change_cover_widget.dart';
@@ -75,15 +75,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           child: Column(
             children: [
               BlocBuilder<ActivityEditBloc, ActivityEditState>(
-                builder: (context, state) {
-                  if (state is ActivityEditChangedState &&
-                      state.activity.image != null) {
-                    return ChangeCoverWidget();
-                  } else {
-                    return ButtonAddCover();
-                  }
-                },
-              ),
+                  builder: (context, state) => state.maybeWhen(
+                      changed: (activity) {
+                        if (activity.image != null)
+                          return ChangeCoverWidget();
+                        else
+                          return ButtonAddCover();
+                      },
+                      orElse: () => ButtonAddCover())),
               Row(
                 children: [
                   Expanded(flex: 2, child: TextFieldTitle()),
@@ -104,42 +103,55 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   }
 
   _checkQuillvalue() {
-    if ((activityEditBloc.state as ActivityEditChangedState)
-            .activity
-            .description !=
-        null) {
-      _quillController.document = Document.fromJson(jsonDecode(
-          (activityEditBloc.state as ActivityEditChangedState)
-              .activity
-              .description!));
-    }
+    activityEditBloc.state.maybeWhen(
+        changed: (activity) {
+          if (activity.description != null)
+            _quillController.document =
+                Document.fromJson(jsonDecode(activity.description!));
+        },
+        orElse: () {});
+    // if ((activityEditBloc.state as ActivityEditChangedState)
+    //         .activity
+    //         .description !=
+    //     null) {
+    //   _quillController.document = Document.fromJson(jsonDecode(
+    //       (activityEditBloc.state as ActivityEditChangedState)
+    //           .activity
+    //           .description!));
+    // }
   }
 
   _closeActivity() {
     Navigator.pop(context);
   }
 
-  _saveActivity() async {
-    if ((activityEditBloc.state as ActivityEditChangedState).activity.title ==
-        "") {
-      return null;
-    } else {
-      activityEditBloc.add(ActivityChangedDescriptionEvent(
-          description:
-              jsonEncode(_quillController.document.toDelta().toJson())));
-      log(jsonEncode(_quillController.document.toDelta().toJson()));
-      log((activityEditBloc.state as ActivityEditChangedState)
-          .activity
-          .description
-          .toString());
-      while ((activityEditBloc.state as ActivityEditChangedState)
-              .activity
-              .description !=
-          jsonEncode(_quillController.document.toDelta().toJson())) {
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-      Navigator.pop(context,
-          (activityEditBloc.state as ActivityEditChangedState).activity);
-    }
+  _saveActivity() {
+    return activityEditBloc.state.maybeWhen(
+        changed: (activity) async {
+          if (activity.title == "") {
+            return null;
+          } else {
+            activityEditBloc.add(ActivityEditEvent.changedDescription(
+                description:
+                    jsonEncode(_quillController.document.toDelta().toJson())));
+            // log(jsonEncode(_quillController.document.toDelta().toJson()));
+            // log((activityEditBloc.state as ActivityEditChangedState)
+            //     .activity
+            //     .description
+            //     .toString());
+            while (activity.description !=
+                jsonEncode(_quillController.document.toDelta().toJson())) {
+              await Future.delayed(const Duration(milliseconds: 100));
+            }
+            Navigator.pop(
+              context,
+              activityEditBloc.state.maybeWhen(
+                changed: (activity) => activity,
+                orElse: () {},
+              ),
+            );
+          }
+        },
+        orElse: () {});
   }
 }

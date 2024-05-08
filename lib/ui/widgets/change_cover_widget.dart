@@ -1,10 +1,11 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memory_hive/constants.dart';
-import 'package:memory_hive/logic/bloc/acitvity_edit_bloc/activity_edit_bloc.dart';
+import 'package:memory_hive/logic/bloc/activity_edit_bloc/activity_edit_bloc.dart';
 
 class ChangeCoverWidget extends StatefulWidget {
   const ChangeCoverWidget({super.key});
@@ -60,7 +61,8 @@ class _ChangeCoverWidgetState extends State<ChangeCoverWidget> {
                               Uint8List uint8list =
                                   Uint8List.fromList(imageBytes);
                               activityEditBloc.add(
-                                  ActivityChangedImageEvent(image: uint8list));
+                                  ActivityEditEvent.changedImage(
+                                      image: uint8list));
                             } else
                               return;
                             Navigator.pop(context);
@@ -70,8 +72,10 @@ class _ChangeCoverWidgetState extends State<ChangeCoverWidget> {
                           leading: Icon(Icons.close),
                           title: Text("Remove", style: kTextDefault),
                           onTap: () {
-                            activityEditBloc
-                                .add(ActivityChangedImageEvent(image: null));
+                            activityEditBloc.add(
+                                  ActivityEditEvent.changedImage(
+                                      image: null));
+                            log(activityEditBloc.state.toString());
                             Navigator.pop(context);
                           },
                         )
@@ -79,8 +83,8 @@ class _ChangeCoverWidgetState extends State<ChangeCoverWidget> {
                     ));
               });
         },
-        child: Image.memory((activityEditBloc.state as ActivityEditChangedState)
-            .activity
-            .image!));
+        child: activityEditBloc.state.maybeWhen(
+            changed: (activity) => Image.memory(activity.image!),
+            orElse: () {}));
   }
 }
